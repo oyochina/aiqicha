@@ -1,6 +1,8 @@
 import requests
 import json
 import random
+from openpyxl import Workbook
+import re
 
 def parse_index(content, flag=True):
     tag_2 = '/* eslint-enable */</script><script data-app'
@@ -79,11 +81,25 @@ url="https://aiqicha.baidu.com/s"
 'Referer': 'https://aiqicha.baidu.com/'}'''
 
 
-kv={'q':'南通永凡文化传媒有限公司','t':'0'}
+kv={'q':'德哈哈','t':'0'}
 r=requests.get(url,headers=build_headers(),params=kv)
 content=r.text
-item=parse_index(content)
+item=parse_index(content,False)
 #r=requests.get(url,params=kv)
-r.encoding='utf-8'
+#r.encoding='utf-8'
 #print(r.request.url)
-print(item)
+
+
+path='test.xlsx'
+wb=Workbook()
+ws=wb.active
+ws.title='hello'
+#ws.cell(row=1,column=2,value=item['entName'])
+
+entName=item['entName']
+pattern = re.compile(r'<[^>]+>', re.S)
+result = pattern.sub('', entName)
+ws.cell(2,6).value=result
+wb.save(filename=path)
+
+#print(item)
