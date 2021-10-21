@@ -2,7 +2,7 @@
 import caiji
 from openpyxl import Workbook,load_workbook
 import time,re
-book= load_workbook('1.xlsx')
+book= load_workbook('汇龙最低2422.xlsx')
 
 # 获取sheet页
 ws = book['Sheet1']
@@ -10,12 +10,17 @@ ws = book['Sheet1']
 
 pattern = re.compile(r'<[^>]+>', re.S)
 
+j=0
 
-for i in range(309,310):
-    name,address = caiji.collection(ws.cell(row=i, column=3).value)
+for i in range(401,500):
+    name,address = caiji.collection(ws.cell(row=i, column=2).value)
     
     result = pattern.sub('', address)
-    ws.cell(i,10).value=result
+    ws.cell(i,12).value=result
+    j=j+1
+    if j==10:
+        book.save('汇龙最低2422.xlsx')
+        j=0
 
 
 
@@ -45,5 +50,5 @@ for i in range(309,310):
 #pattern = re.compile(r'<[^>]+>', re.S)
 #result = pattern.sub('', entName)
 #ws.cell(2,6).value=result
-book.save('1.xlsx')
+
 book.close
