@@ -1,25 +1,27 @@
 
 import caiji
 from openpyxl import Workbook,load_workbook
-import time
-book= load_workbook('参保.xlsx')
+import time,re
+book= load_workbook('1.xlsx')
 
 # 获取sheet页
 ws = book['Sheet1']
 
 
+pattern = re.compile(r'<[^>]+>', re.S)
 
 
-
-for i in range(3,8):
+for i in range(309,310):
     name,address = caiji.collection(ws.cell(row=i, column=3).value)
-    ws.cell(i,10).value=address
+    
+    result = pattern.sub('', address)
+    ws.cell(i,10).value=result
 
 
 
-    #print(name)
-    #print(address)
-    time.sleep(5)
+    print(str(i)+name+':'+result)
+    
+    time.sleep(2)
     
     #print(ws.cell(row=i, column=3).value)
 
